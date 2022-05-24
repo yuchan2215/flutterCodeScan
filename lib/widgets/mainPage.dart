@@ -68,7 +68,11 @@ class MyHomePageState extends State<MyHomePage> {
                     const Divider(),
                     Container(
                       width: double.infinity,
-                      child: OutlinedButton(
+                      child: OutlinedButton( //参考：https://zenn.dev/enoiu/articles/6b754d37d5a272#elevatedbutton%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: Theme.of(context).colorScheme.onPrimary,
+                          primary: Theme.of(context).colorScheme.primary,
+                        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                         onPressed: () {},
                         child: const Text("開く"),
                       ),
