@@ -9,7 +9,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Code Reader',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.light,
+        visualDensity: VisualDensity.adaptivePlatformDensity
       ),
       home: const MyHomePage(title: 'Code Reader Home'),
     );
