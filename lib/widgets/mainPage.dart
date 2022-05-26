@@ -17,11 +17,13 @@ class MyHomePageState extends State<MyHomePage> {
               title: "カメラから読み込む",
               description: "カメラを起動して撮影した画像から、コードを読み取ります。",
               icon: Icons.camera_alt_outlined,
+              key: new Key("camera_card")
             ),
             getCard(
               title: "ギャラリーから読み込む",
               description: "ギャラリーから画像を選択された画像から、コードを読み取ります。",
               icon: Icons.image_search,
+              key: new Key("gallery_card")
             ),
             Expanded(child: Container()),
           ],
@@ -33,8 +35,10 @@ class MyHomePageState extends State<MyHomePage> {
   Card getCard(
       {required String title,
       required String description,
-      required IconData icon}) {
+      required IconData icon,
+      required Key key}) {
     return Card(
+      key: key,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ConstrainedBox(
