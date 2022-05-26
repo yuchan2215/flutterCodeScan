@@ -26,6 +26,15 @@ class _CameraPageState extends State<CameraPage> {
 
   QRViewController? controller;
 
+  List<Barcode> codes = [];
+  int _counts = 0;
+
+  void update() {
+    setState(() {
+      _counts = codes.length;
+    });
+  }
+
   @override
   void reassemble() {
     super.reassemble();
@@ -65,7 +74,7 @@ class _CameraPageState extends State<CameraPage> {
             ),
             collapsed: Center(
                 child: SafeArea(
-              child: Text("?件読み込みました"),
+              child: Text("$_counts件読み込みました"),
             )),
             borderRadius: borderRadius,
           )
@@ -94,11 +103,23 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
+    //データが存在するかどうか確認する。
+    bool isExistData(Barcode barcode) {
+      var readRaw = barcode.rawBytes?.join() ?? "";
+      return codes
+          .where((Barcode code) => (code.rawBytes?.join() ?? "") == readRaw)
+          .isNotEmpty;
+    }
+
     setState(() {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) async {
-      print(scanData.code);
+      //もしデータがあるなら早期リターン
+      if (isExistData(scanData)) return;
+
+      codes.add(scanData);
+      update();
     });
   }
 
