@@ -29,9 +29,17 @@ class _CameraPageState extends State<CameraPage> {
   List<Barcode> codes = [];
   int _counts = 0;
 
+  List<Widget> wg = [];
+
+  PanelController _pc = new PanelController();
+
   void update() {
     setState(() {
       _counts = codes.length;
+      wg = [];
+      codes.forEach((element) {
+        wg.add(Text(element.code ?? ""));
+      });
     });
   }
 
@@ -69,15 +77,44 @@ class _CameraPageState extends State<CameraPage> {
             ],
           ),
           SlidingUpPanel(
-            panel: Center(
-              child: Text("データ一覧はここに"),
+            controller: _pc,
+            maxHeight: MediaQuery.of(context).size.height -
+                AppBar().preferredSize.height -
+                MediaQuery.of(context).padding.bottom,
+            panel: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: 100.0,
+                    child: Center(
+                      child: Text("$_counts件読み込みました"),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        ...wg,
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: OutlinedButton(
+                      onPressed: () {
+                        _pc.close();
+                      },
+                      child: Container(
+                          width: double.infinity,
+                          child: Center(
+                            child: Text("閉じる"),
+                          )),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            collapsed: Center(
-                child: SafeArea(
-              child: Text("$_counts件読み込みました"),
-            )),
             borderRadius: borderRadius,
-          )
+          ),
         ],
       ),
     );
