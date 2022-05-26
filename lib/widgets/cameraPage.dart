@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:io';
 import 'dart:developer';
 import 'dart:math';
@@ -13,8 +14,15 @@ class CameraPage extends StatefulWidget {
   _CameraPageState createState() => _CameraPageState();
 }
 
+final double edgeSize = 24.0;
+
 class _CameraPageState extends State<CameraPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  final BorderRadius borderRadius = BorderRadius.only(
+    topLeft: Radius.circular(edgeSize),
+    topRight: Radius.circular(edgeSize),
+  );
 
   QRViewController? controller;
 
@@ -35,16 +43,32 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      print("Hello");
-    });
     return Scaffold(
       appBar: AppBar(
         title: Text("読み込み"),
       ),
       body: Stack(
         children: [
-          _buildQrView(context),
+          Column(
+            children: [
+              Expanded(
+                child: _buildQrView(context),
+              ),
+              SizedBox(
+                height: 100.0 - edgeSize,
+              ),
+            ],
+          ),
+          SlidingUpPanel(
+            panel: Center(
+              child: Text("データ一覧はここに"),
+            ),
+            collapsed: Center(
+                child: SafeArea(
+              child: Text("?件読み込みました"),
+            )),
+            borderRadius: borderRadius,
+          )
         ],
       ),
     );
