@@ -17,13 +17,17 @@ class MyHomePageState extends State<MyHomePage> {
               title: "カメラから読み込む",
               description: "カメラを起動して撮影した画像から、コードを読み取ります。",
               icon: Icons.camera_alt_outlined,
-              key: new Key("camera_card")
+              key: new Key("camera_card"),
+              onPressed: (){
+                Navigator.of(context).pushNamed("/camera");
+              },
             ),
             getCard(
               title: "ギャラリーから読み込む",
               description: "ギャラリーから画像を選択された画像から、コードを読み取ります。",
               icon: Icons.image_search,
-              key: new Key("gallery_card")
+              key: new Key("gallery_card"),
+              onPressed: (){},
             ),
             Expanded(child: Container()),
           ],
@@ -36,7 +40,9 @@ class MyHomePageState extends State<MyHomePage> {
       {required String title,
       required String description,
       required IconData icon,
-      required Key key}) {
+      required Key key,
+      required Function()? onPressed,
+      }) {
     return Card(
       key: key,
       child: Padding(
@@ -77,7 +83,7 @@ class MyHomePageState extends State<MyHomePage> {
                           onPrimary: Theme.of(context).colorScheme.onPrimary,
                           primary: Theme.of(context).colorScheme.primary,
                         ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                        onPressed: () {},
+                        onPressed: onPressed,
                         child: const Text("開く"),
                       ),
                     )
