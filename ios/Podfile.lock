@@ -1,16 +1,25 @@
 PODS:
   - Flutter (1.0.0)
+  - image_picker_ios (0.0.1):
+    - Flutter
+  - mono_kit (0.0.1):
+    - Flutter
   - MTBBarcodeScanner (5.0.11)
   - permission_handler_apple (9.0.4):
     - Flutter
   - qr_code_scanner (0.2.0):
     - Flutter
     - MTBBarcodeScanner
+  - url_launcher_ios (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - mono_kit (from `.symlinks/plugins/mono_kit/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
   trunk:
@@ -19,16 +28,25 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  mono_kit:
+    :path: ".symlinks/plugins/mono_kit/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   qr_code_scanner:
     :path: ".symlinks/plugins/qr_code_scanner/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
+  mono_kit: 67c15c1486e232d7f44ac47286933e80aa02f7a3
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
+  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
