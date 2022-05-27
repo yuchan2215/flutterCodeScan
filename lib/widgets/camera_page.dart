@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:mono_kit/mono_kit.dart';
@@ -39,13 +40,21 @@ class CamerapageState extends State<CameraPage> {
       ),
       child: Card(
         color: Theme.of(context).scaffoldBackgroundColor,
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Column(
-            children: [
-              Text(code),
-            ],
+        child: InkWell(
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                Text(code),
+              ],
+            ),
           ),
+          onLongPress: () {
+            Clipboard.setData(ClipboardData(text: code));
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("クリップボードにコピーしました。")),
+            );
+          },
         ),
       ),
     );
