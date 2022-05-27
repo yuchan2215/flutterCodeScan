@@ -49,5 +49,10 @@
     <true/>
     <key>NSCameraUsageDescription</key>
     <string>QRコードの読み取りなどに使います</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+	</array>
 </dict>
 </plist>

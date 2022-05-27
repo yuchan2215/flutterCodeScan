@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:mono_kit/mono_kit.dart';
 import 'dart:io';
 
@@ -54,6 +55,44 @@ class CamerapageState extends State<CameraPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("クリップボードにコピーしました。")),
             );
+          },
+          onTap: () {
+            var regex =
+                RegExp(r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+");
+            if (regex.hasMatch(code)) {
+              
+              showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    title: Row(children: const [
+                      Icon(Icons.open_in_browser),
+                      Text("ブラウザで開く"),
+                    ]),
+                    content: Text(code),
+                    actions: [
+                      TextButton(
+                        child: const Text("キャンセル"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      TextButton(
+                        child: const Text("開く"),
+                        onPressed: () async {
+                          var uri = Uri.parse(code);
+                          if (!await canLaunchUrl(uri)) return;
+                          launchUrl(
+                            uri,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
+                      )
+                    ],
+                  );
+                },
+              );
+            }
           },
         ),
       ),
