@@ -35,13 +35,13 @@ class _CameraPageState extends State<CameraPage> {
 
   Widget getItemCard(Barcode element) {
     return Padding(
-      padding: EdgeInsets.only(left: 10.0,
-          top: 3.0,
-          right: 10.0,),
+      padding: EdgeInsets.only(
+        left: 10.0,
+        top: 3.0,
+        right: 10.0,
+      ),
       child: Card(
-        color: Theme
-            .of(context)
-            .scaffoldBackgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
           padding: EdgeInsets.all(5.0),
           child: Column(
@@ -149,13 +149,6 @@ class _CameraPageState extends State<CameraPage> {
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(
-        borderColor: Theme.of(context).primaryColor,
-        borderRadius: 10,
-        borderLength: 30,
-        borderWidth: 10,
-        cutOutSize: scanArea,
-      ),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );
   }
