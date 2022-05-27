@@ -33,12 +33,33 @@ class _CameraPageState extends State<CameraPage> {
 
   PanelController _pc = new PanelController();
 
+  Widget getItemCard(Barcode element) {
+    return Padding(
+      padding: EdgeInsets.only(left: 10.0,
+          top: 3.0,
+          right: 10.0,),
+      child: Card(
+        color: Theme
+            .of(context)
+            .scaffoldBackgroundColor,
+        child: Padding(
+          padding: EdgeInsets.all(5.0),
+          child: Column(
+            children: [
+              Text(element.code ?? ""),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void update() {
     setState(() {
       _counts = codes.length;
       wg = [];
       codes.forEach((element) {
-        wg.add(Text(element.code ?? ""));
+        wg.add(getItemCard(element));
       });
     });
   }
