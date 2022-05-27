@@ -30,7 +30,7 @@ class CamerapageState extends State<CameraPage> {
 
   final PanelController _pc = PanelController();
 
-  Widget getItemCard(Barcode element) {
+  Widget getItemCard(String code) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 10.0,
@@ -43,7 +43,7 @@ class CamerapageState extends State<CameraPage> {
           padding: const EdgeInsets.all(5.0),
           child: Column(
             children: [
-              Text(element.code ?? ""),
+              Text(code),
             ],
           ),
         ),
@@ -56,7 +56,8 @@ class CamerapageState extends State<CameraPage> {
       _counts = codes.length;
       wg = [];
       for (var element in codes) {
-        wg.add(getItemCard(element));
+        if (element.code == null) continue;
+        wg.add(getItemCard(element.code!));
       }
     });
   }
