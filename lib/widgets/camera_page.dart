@@ -3,24 +3,20 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:mono_kit/mono_kit.dart';
 import 'dart:io';
-import 'dart:developer';
-import 'dart:math';
-
-import '../app.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);
 
   @override
-  _CameraPageState createState() => _CameraPageState();
+  CamerapageState createState() => CamerapageState();
 }
 
-final double edgeSize = 24.0;
+const double edgeSize = 24.0;
 
-class _CameraPageState extends State<CameraPage> {
+class CamerapageState extends State<CameraPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  final BorderRadius borderRadius = BorderRadius.only(
+  final BorderRadius borderRadius = const BorderRadius.only(
     topLeft: Radius.circular(edgeSize),
     topRight: Radius.circular(edgeSize),
   );
@@ -32,11 +28,11 @@ class _CameraPageState extends State<CameraPage> {
 
   List<Widget> wg = [];
 
-  PanelController _pc = new PanelController();
+  final PanelController _pc = PanelController();
 
   Widget getItemCard(Barcode element) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 10.0,
         top: 3.0,
         right: 10.0,
@@ -44,7 +40,7 @@ class _CameraPageState extends State<CameraPage> {
       child: Card(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
-          padding: EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(5.0),
           child: Column(
             children: [
               Text(element.code ?? ""),
@@ -59,9 +55,9 @@ class _CameraPageState extends State<CameraPage> {
     setState(() {
       _counts = codes.length;
       wg = [];
-      codes.forEach((element) {
+      for (var element in codes) {
         wg.add(getItemCard(element));
-      });
+      }
     });
   }
 
@@ -84,7 +80,7 @@ class _CameraPageState extends State<CameraPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("読み込み"),
+        title: const Text("読み込み"),
       ),
       body: Stack(
         children: [
@@ -93,7 +89,7 @@ class _CameraPageState extends State<CameraPage> {
               Expanded(
                 child: _buildQrView(context),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 100.0 - edgeSize,
               ),
             ],
@@ -106,7 +102,7 @@ class _CameraPageState extends State<CameraPage> {
             panel: SafeArea(
               child: Column(
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     height: 100.0,
                     child: Center(
                       child: Text("$_counts件読み込みました"),
@@ -132,9 +128,9 @@ class _CameraPageState extends State<CameraPage> {
 
   Widget _bottomButtons() {
     return Container(
-      margin: EdgeInsets.only(
-        top: 20.0,
-        left: 10.0,
+      margin: const EdgeInsets.only(
+        top: 20,
+        left: 10,
         right: 10.0,
       ),
       child: Row(
@@ -150,15 +146,15 @@ class _CameraPageState extends State<CameraPage> {
                 codes = [];
                 update();
               },
-              child: Text(
+              child: const Text(
                 "全て削除",
                 style: TextStyle(
                   color: Colors.white,
-                  ),
+                ),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10.0,
           ),
           Expanded(
@@ -168,7 +164,7 @@ class _CameraPageState extends State<CameraPage> {
               onPressed: () {
                 _pc.close();
               },
-              child: Text("閉じる"),
+              child: const Text("閉じる"),
             ),
           )
         ],
@@ -177,10 +173,6 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    var scanArea = min(width, height) * 0.9;
-
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
@@ -210,10 +202,9 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    print('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('no Permission')),
+        const SnackBar(content: Text('no Permission')),
       );
     }
   }

@@ -17,8 +17,8 @@ class MyHomePageState extends State<MyHomePage> {
               title: "カメラから読み込む",
               description: "カメラを起動して撮影した画像から、コードを読み取ります。",
               icon: Icons.camera_alt_outlined,
-              key: new Key("camera_card"),
-              onPressed: (){
+              key: const Key("camera_card"),
+              onPressed: () {
                 Navigator.of(context).pushNamed("/camera");
               },
             ),
@@ -26,8 +26,8 @@ class MyHomePageState extends State<MyHomePage> {
               title: "ギャラリーから読み込む",
               description: "ギャラリーから画像を選択された画像から、コードを読み取ります。",
               icon: Icons.image_search,
-              key: new Key("gallery_card"),
-              onPressed: (){},
+              key: const Key("gallery_card"),
+              onPressed: () {},
             ),
             Expanded(child: Container()),
           ],
@@ -36,13 +36,13 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Card getCard(
-      {required String title,
-      required String description,
-      required IconData icon,
-      required Key key,
-      required Function()? onPressed,
-      }) {
+  Card getCard({
+    required String title,
+    required String description,
+    required IconData icon,
+    required Key key,
+    required Function()? onPressed,
+  }) {
     return Card(
       key: key,
       child: Padding(
@@ -76,9 +76,10 @@ class MyHomePageState extends State<MyHomePage> {
                       softWrap: true,
                     ),
                     const Divider(),
-                    Container(
+                    SizedBox(
                       width: double.infinity,
-                      child: OutlinedButton( //参考：https://zenn.dev/enoiu/articles/6b754d37d5a272#elevatedbutton%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6
+                      child: OutlinedButton(
+                        //参考：https://zenn.dev/enoiu/articles/6b754d37d5a272#elevatedbutton%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6
                         style: ElevatedButton.styleFrom(
                           onPrimary: Theme.of(context).colorScheme.onPrimary,
                           primary: Theme.of(context).colorScheme.primary,
