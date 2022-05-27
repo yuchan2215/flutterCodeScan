@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:mono_kit/mono_kit.dart';
 import 'dart:io';
 import 'dart:developer';
 import 'dart:math';
@@ -118,24 +119,58 @@ class _CameraPageState extends State<CameraPage> {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: OutlinedButton(
-                      onPressed: () {
-                        _pc.close();
-                      },
-                      child: Container(
-                          width: double.infinity,
-                          child: Center(
-                            child: Text("閉じる"),
-                          )),
-                    ),
-                  ),
+                  _bottomButtons()
                 ],
               ),
             ),
             borderRadius: borderRadius,
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _bottomButtons() {
+    return Container(
+      margin: EdgeInsets.only(
+        top: 20.0,
+        left: 10.0,
+        right: 10.0,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            // 削除ボタン
+            flex: 1,
+            child: FilledTonalButton(
+              style: FilledTonalButton.styleFrom(
+                primary: Theme.of(context).errorColor,
+              ),
+              onPressed: () {
+                codes = [];
+                update();
+              },
+              child: Text(
+                "全て削除",
+                style: TextStyle(
+                  color: Colors.white,
+                  ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 10.0,
+          ),
+          Expanded(
+            //閉じるボタン
+            flex: 2,
+            child: FilledTonalButton(
+              onPressed: () {
+                _pc.close();
+              },
+              child: Text("閉じる"),
+            ),
+          )
         ],
       ),
     );

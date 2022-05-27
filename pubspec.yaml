@@ -19,6 +19,7 @@ dependencies:
       ref: fix_break_changes_platform
   sliding_up_panel: ^2.0.0
   permission_handler: ^9.2.0
+  mono_kit: ^0.27.1
 
 dev_dependencies:
   flutter_test:
