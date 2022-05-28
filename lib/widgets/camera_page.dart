@@ -143,32 +143,32 @@ class CamerapageState extends State<CameraPage> {
               ),
             ],
           ),
-          SlidingUpPanel(
-            controller: _pc,
-            maxHeight: MediaQuery.of(context).size.height -
-                AppBar().preferredSize.height -
-                MediaQuery.of(context).padding.bottom,
-            panel: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 100.0,
-                    child: Center(
-                      child: Text("$_counts件読み込みました"),
+          LayoutBuilder(
+            builder: (key, builder) => SlidingUpPanel(
+              controller: _pc,
+              maxHeight: builder.maxHeight,
+              panel: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 100.0,
+                      child: Center(
+                        child: Text("$_counts件読み込みました"),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        ...wg,
-                      ],
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          ...wg,
+                        ],
+                      ),
                     ),
-                  ),
-                  _bottomButtons()
-                ],
+                    _bottomButtons(),
+                  ],
+                ),
               ),
+              borderRadius: borderRadius,
             ),
-            borderRadius: borderRadius,
           ),
         ],
       ),
