@@ -1,5 +1,7 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,7 +16,18 @@ class CameraPage extends StatefulWidget {
 
 const double edgeSize = 24.0;
 
-class CamerapageState extends State<CameraPage> {
+class CamerapageState extends State<CameraPage> with AfterLayoutMixin<CameraPage>{
+
+  MobileScannerController controller = MobileScannerController();
+  @override
+  void afterFirstLayout(BuildContext context){
+    var obj = ModalRoute.of(context)?.settings.arguments;
+    if(obj == null)return;
+    if(obj is! XFile)return;
+    String path = obj.path;
+    controller.analyzeImage(path);
+  }
+
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   final BorderRadius borderRadius = const BorderRadius.only(
