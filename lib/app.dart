@@ -1,4 +1,5 @@
-import 'package:codereader/widgets/mainPage.dart';
+import 'package:codereader/widgets/main_page.dart';
+import 'package:codereader/widgets/camera_page.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -9,15 +10,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Code Reader',
       theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
-        brightness: Brightness.light,
-        visualDensity: VisualDensity.adaptivePlatformDensity
-      ),
+          useMaterial3: true,
+          colorSchemeSeed: Colors.blue,
+          brightness: Brightness.light,
+          visualDensity: VisualDensity.adaptivePlatformDensity),
       home: const MyHomePage(title: 'Code Reader Home'),
+      routes: {
+        "/camera": (BuildContext context) => const CameraPage(),
+      },
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
