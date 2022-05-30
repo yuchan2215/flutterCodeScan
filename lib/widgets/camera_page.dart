@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mono_kit/mono_kit.dart';
-import 'dart:io';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);
@@ -22,8 +21,6 @@ class CamerapageState extends State<CameraPage> {
     topLeft: Radius.circular(edgeSize),
     topRight: Radius.circular(edgeSize),
   );
-
-  QRViewController? controller;
 
   List<Barcode> codes = [];
   int _counts = 0;
@@ -60,7 +57,6 @@ class CamerapageState extends State<CameraPage> {
             var regex =
                 RegExp(r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+");
             if (regex.hasMatch(code)) {
-              
               showDialog(
                 context: context,
                 builder: (_) {
@@ -104,25 +100,10 @@ class CamerapageState extends State<CameraPage> {
       _counts = codes.length;
       wg = [];
       for (var element in codes) {
-        if (element.code == null) continue;
-        wg.add(getItemCard(element.code!));
+        if (element.rawValue == null) continue;
+        wg.add(getItemCard(element.rawValue!));
       }
     });
-  }
-
-  @override
-  void reassemble() {
-    super.reassemble();
-    if (Platform.isAndroid) {
-      controller?.pauseCamera();
-    }
-    controller?.resumeCamera();
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
   }
 
   @override
@@ -222,15 +203,6 @@ class CamerapageState extends State<CameraPage> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    return QRView(
-      key: qrKey,
-      onQRViewCreated: _onQRViewCreated,
-      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
-    );
-  }
-
-  void _onQRViewCreated(QRViewController controller) {
-    //データが存在するかどうか確認する。
     bool isExistData(Barcode barcode) {
       var readRaw = barcode.rawBytes?.join() ?? "";
       return codes
@@ -238,23 +210,14 @@ class CamerapageState extends State<CameraPage> {
           .isNotEmpty;
     }
 
-    setState(() {
-      this.controller = controller;
-    });
-    controller.scannedDataStream.listen((scanData) async {
-      //もしデータがあるなら早期リターン
-      if (isExistData(scanData)) return;
-
-      codes.add(scanData);
-      update();
-    });
-  }
-
-  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    if (!p) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
-      );
-    }
+    return MobileScanner(
+      allowDuplicates: true,
+      onDetect: (barcode, args) {
+        if (isExistData(barcode)) return;
+        if (barcode.rawValue == null) return;
+        codes.add(barcode);
+        update();
+      },
+    );
   }
 }

@@ -1,7 +1,7 @@
 name: codereader
 description: Two-dimensional code Reader
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -13,10 +13,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  qr_code_scanner:
-    git:
-      url: https://github.com/xeinebiu/qr_code_scanner.git
-      ref: fix_break_changes_platform
+  mobile_scanner: ^1.1.1
   sliding_up_panel: ^2.0.0
   permission_handler: ^9.2.0
   mono_kit: ^0.27.1
