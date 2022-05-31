@@ -26,6 +26,7 @@ class CamerapageState extends State<CameraPage> with AfterLayoutMixin<CameraPage
     if(obj is! XFile)return;
     String path = obj.path;
     controller.analyzeImage(path);
+    _pc.open();
   }
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
