@@ -1,5 +1,5 @@
-import 'package:codereader/widgets/main_page.dart';
-import 'package:codereader/widgets/camera_page.dart';
+import 'package:codereader/pages/main_page.dart';
+import 'package:codereader/pages/camera.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
