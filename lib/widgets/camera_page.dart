@@ -16,14 +16,14 @@ class CameraPage extends StatefulWidget {
 
 const double edgeSize = 24.0;
 
-class CamerapageState extends State<CameraPage> with AfterLayoutMixin<CameraPage>{
-
+class CamerapageState extends State<CameraPage>
+    with AfterLayoutMixin<CameraPage> {
   MobileScannerController controller = MobileScannerController();
   @override
-  void afterFirstLayout(BuildContext context)async {
+  void afterFirstLayout(BuildContext context) async {
     var obj = ModalRoute.of(context)?.settings.arguments;
-    if(obj == null)return;
-    if(obj is! XFile)return;
+    if (obj == null) return;
+    if (obj is! XFile) return;
     String path = obj.path;
     await controller.analyzeImage(path);
     _pc.open();
@@ -163,10 +163,10 @@ class CamerapageState extends State<CameraPage> with AfterLayoutMixin<CameraPage
                 ),
               ),
               borderRadius: borderRadius,
-              onPanelOpened: (){
+              onPanelOpened: () {
                 scc.stop();
               },
-              onPanelClosed: (){
+              onPanelClosed: () {
                 scc.start();
               },
             ),
