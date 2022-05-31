@@ -20,12 +20,12 @@ class CamerapageState extends State<CameraPage> with AfterLayoutMixin<CameraPage
 
   MobileScannerController controller = MobileScannerController();
   @override
-  void afterFirstLayout(BuildContext context){
+  void afterFirstLayout(BuildContext context)async {
     var obj = ModalRoute.of(context)?.settings.arguments;
     if(obj == null)return;
     if(obj is! XFile)return;
     String path = obj.path;
-    controller.analyzeImage(path);
+    await controller.analyzeImage(path);
     _pc.open();
   }
 
@@ -163,6 +163,12 @@ class CamerapageState extends State<CameraPage> with AfterLayoutMixin<CameraPage
                 ),
               ),
               borderRadius: borderRadius,
+              onPanelOpened: (){
+                scc.stop();
+              },
+              onPanelClosed: (){
+                scc.start();
+              },
             ),
           ),
         ],
@@ -216,6 +222,7 @@ class CamerapageState extends State<CameraPage> with AfterLayoutMixin<CameraPage
     );
   }
 
+  MobileScannerController scc = MobileScannerController();
   Widget _buildQrView(BuildContext context) {
     bool isExistData(Barcode barcode) {
       var readRaw = barcode.rawBytes?.join() ?? "";
@@ -225,6 +232,7 @@ class CamerapageState extends State<CameraPage> with AfterLayoutMixin<CameraPage
     }
 
     return MobileScanner(
+      controller: scc,
       allowDuplicates: true,
       onDetect: (barcode, args) {
         if (isExistData(barcode)) return;
