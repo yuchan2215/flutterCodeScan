@@ -2,16 +2,16 @@ import 'package:codereader/pages/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import 'camera_panel_card_item.dart';
 
 class PanelCard extends StatelessWidget {
   final CamerapageState state;
   final Barcode barcode;
   final BuildContext context;
+  late final BarcodeItem item = BarcodeItem(barcode, context);
   PanelCard(this.state, this.barcode, this.context, {Key? key})
       : super(key: key);
-
-  late final code = barcode.rawValue ?? "";
   final RegExp regex =
       RegExp(r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+");
 
@@ -24,11 +24,10 @@ class PanelCard extends StatelessWidget {
         right: 10.0,
       ),
       child: Card(
-        color: Theme.of(context).scaffoldBackgroundColor,
         child: InkWell(
           onLongPress: longPressEvent,
-          onTap: tapEvent,
-          child: cardItem(code),
+          onTap: item.nothingFunction(),
+          child: cardItem(),
         ),
       ),
     );
@@ -36,7 +35,7 @@ class PanelCard extends StatelessWidget {
 
   ///カードを長押しした時のイベント
   void longPressEvent() {
-    Clipboard.setData(ClipboardData(text: code));
+    Clipboard.setData(ClipboardData(text: barcode.toString()));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("クリップボードにコピーしました。")),
     );
@@ -44,54 +43,16 @@ class PanelCard extends StatelessWidget {
 
   ///カードをタップした時のイベント
   void tapEvent() {
-    if (regex.hasMatch(code)) {
-      showDialog(
-        context: context,
-        builder: (_) {
-          return browserDialog();
-        },
-      );
-    }
-  }
-
-  ///ブラウザを開く時のダイアログ
-  AlertDialog browserDialog() {
-    return AlertDialog(
-      title: Row(children: const [
-        Icon(Icons.open_in_browser),
-        Text("ブラウザで開く"),
-      ]),
-      content: Text(code),
-      actions: [
-        TextButton(
-          child: const Text("キャンセル"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        TextButton(
-          child: const Text("開く"),
-          onPressed: () async {
-            var uri = Uri.parse(code);
-            if (!await canLaunchUrl(uri)) return;
-            launchUrl(
-              uri,
-              mode: LaunchMode.externalApplication,
-            );
-          },
-        )
-      ],
-    );
+    if (barcode.type == BarcodeType.url) {}
   }
 
   ///カードの内容
-  Padding cardItem(String code) {
+  Padding cardItem() {
     return Padding(
       padding: const EdgeInsets.all(5.0),
-      child: Column(
-        children: [
-          Text(code),
-        ],
+      child: ListTile(
+        leading: Icon(item.icon),
+        title: Text(item.display),
       ),
     );
   }

@@ -43,7 +43,6 @@ class CamerapageState extends State<CameraPage>
       counts = codes.length;
       widgets = [];
       for (var element in codes) {
-        if (element.rawValue == null) continue;
         widgets.add(
           PanelCard(this, element,context),
         );

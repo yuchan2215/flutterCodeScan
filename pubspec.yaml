@@ -13,7 +13,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  mobile_scanner: ^1.1.1
+  mobile_scanner:
+    git:
+      url: https://github.com/yuchan2215/mobile_scanner
   sliding_up_panel: ^2.0.0
   permission_handler: ^9.2.0
   mono_kit: ^0.27.1
