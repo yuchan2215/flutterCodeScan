@@ -106,8 +106,8 @@ extension BarcodeTypeExt on Barcode {
         }
         //住所
         if(contactInfo?.addresses.isNotEmpty ?? false){
-          buffer.write("\n住所：");
-          buffer.write(contactInfo!.addresses.map((e) => e.addressLines.join("\n"),).join("\n\n"));
+          buffer.write("\n住所：\n");
+          buffer.write(contactInfo!.addresses.map((e) => e.addressLines.reversed.join("\n"),).toList().join("\n\n"));
         }
         //URL
         if(contactInfo?.urls?.isNotEmpty ?? false){
