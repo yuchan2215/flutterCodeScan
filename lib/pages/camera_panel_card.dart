@@ -53,6 +53,8 @@ class PanelCard extends StatelessWidget {
       child: ListTile(
         leading: Icon(item.icon),
         title: Text(item.display),
+        subtitle:
+            item.subDisplayText != null ? Text(item.subDisplayText!) : null,
       ),
     );
   }
