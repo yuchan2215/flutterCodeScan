@@ -26,24 +26,21 @@ class PanelCard extends StatelessWidget {
       child: Card(
         child: InkWell(
           onLongPress: longPressEvent,
-          onTap: item.nothingFunction(),
+          onTap: tapEvent,
           child: cardItem(),
         ),
       ),
     );
   }
-
+  void tapEvent(){
+            Navigator.of(context).pushNamed("/result",arguments: item);
+  }
   ///カードを長押しした時のイベント
   void longPressEvent() {
     Clipboard.setData(ClipboardData(text: barcode.toString()));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("クリップボードにコピーしました。")),
     );
-  }
-
-  ///カードをタップした時のイベント
-  void tapEvent() {
-    if (barcode.type == BarcodeType.url) {}
   }
 
   ///カードの内容

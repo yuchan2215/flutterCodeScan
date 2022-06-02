@@ -1,5 +1,6 @@
 import 'package:codereader/pages/main_page.dart';
 import 'package:codereader/pages/camera.dart';
+import 'package:codereader/pages/result.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(title: 'Code Reader Home'),
       routes: {
         "/camera": (BuildContext context) => const CameraPage(),
+        "/result": (BuildContext context) => const ResultPageState(),
       },
     );
   }
