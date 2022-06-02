@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'camera_panel_card.dart';
 
-extension EmailExt on Email{
+final RegExp urlReg = RegExp(r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+RR",
+    caseSensitive: false);
+final RegExp mailReg = RegExp(
+    r"[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+    caseSensitive: false);
+extension EmailExt on Email {
   String? get typeText {
     switch(type){
       case EmailType.home: return "自宅:";
@@ -122,8 +127,21 @@ extension BarcodeTypeExt on Barcode {
         }
       case BarcodeType.driverLicense:
         return null; //サポート対象外
-      case BarcodeType.product:
       case BarcodeType.text:
+        var urlMatches = urlReg.allMatches(displayValue ?? "");
+        var emailMatches = mailReg.allMatches(displayValue ?? "");
+        var allMatches = urlMatches.toList()..addAll(emailMatches);
+
+        var textList = allMatches.map((e) => e.group(0)).toList();
+        if (emailMatches.isNotEmpty) {
+          textList.insert(0, "${emailMatches.length}件のメールアドレスが検出されました");
+        }
+        if (urlMatches.isNotEmpty) {
+          textList.insert(0, "${urlMatches.length}件のURLが検出されました");
+        }
+        var text = textList.join("\n");
+        return urlMatches.isEmpty ? null : text;
+      case BarcodeType.product:
       case BarcodeType.phone:
       case BarcodeType.isbn:
       case BarcodeType.geo:
@@ -180,11 +198,7 @@ class BarcodeItem {
   ///[PanelCard]にて表示される説明文
   late final String? subDisplayText = barcode.getSubDisplayText;
 
-  BarcodeItem(this.barcode, this.context){
-   if (kDebugMode) {
-     print(barcode.rawValue);
-   } 
-  }
+  BarcodeItem(this.barcode, this.context);
 
   Function nothingFunction = () {};
 }
