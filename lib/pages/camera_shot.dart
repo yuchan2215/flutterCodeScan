@@ -1,7 +1,5 @@
 import 'package:codereader/pages/camera.dart';
 import 'package:codereader/pages/camera_panel.dart';
-import 'package:flutter/foundation.dart';
-
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -19,9 +17,6 @@ class CameraView extends StatelessWidget {
             allowDuplicates: true,
             //検出時の処理
             onDetect: (barcode, args) async {
-              if (kDebugMode) {
-                print(barcode.displayValue);
-              }
               if (barcode.rawBytes == null) return; //もしデータがNullな早期リターン
               if (isExistData(barcode)) return; //もしデータが存在するなら早期リターン
               state.codes.add(barcode); //コードを追加する

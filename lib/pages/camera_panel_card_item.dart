@@ -1,30 +1,40 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'camera_panel_card.dart';
 
-final RegExp urlReg = RegExp(r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+RR",
+final RegExp urlReg = RegExp(
+    r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+RR",
     caseSensitive: false);
 final RegExp mailReg = RegExp(
     r"[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
     caseSensitive: false);
+
 extension EmailExt on Email {
   String? get typeText {
-    switch(type){
-      case EmailType.home: return "自宅:";
-      case EmailType.work: return "勤務先:";
-      default: return "";
+    switch (type) {
+      case EmailType.home:
+        return "自宅:";
+      case EmailType.work:
+        return "勤務先:";
+      default:
+        return "";
     }
   }
 }
-extension PhoneExt on Phone{
+
+extension PhoneExt on Phone {
   String? get typeText {
-    switch(type){
-      case PhoneType.fax: return "(FAX)";
-      case PhoneType.home: return "(自宅)";
-      case PhoneType.mobile: return "(携帯)";
-      case PhoneType.work: return "(仕事)";
-      default: return "";
+    switch (type) {
+      case PhoneType.fax:
+        return "(FAX)";
+      case PhoneType.home:
+        return "(自宅)";
+      case PhoneType.mobile:
+        return "(携帯)";
+      case PhoneType.work:
+        return "(仕事)";
+      default:
+        return "";
     }
   }
 }
@@ -76,13 +86,13 @@ extension BarcodeTypeExt on Barcode {
         String? displayTitle = (title == null) ? null : "件名: $title}";
         String? displayContent = (title == null) ? null : "本文: $content";
         //もしどちらも存在するなら
-        if(displayTitle != null && displayContent != null){
+        if (displayTitle != null && displayContent != null) {
           return "$displayText\n$displayContent";
-        //もしどちらも存在しないなら
-        }else if(displayTitle == null && displayContent == null){
+          //もしどちらも存在しないなら
+        } else if (displayTitle == null && displayContent == null) {
           return "タップして空メールを作成";
-        //どちらかが存在するなら
-        }else{
+          //どちらかが存在するなら
+        } else {
           return "$displayText$displayContent";
         }
       case BarcodeType.wifi:
@@ -92,35 +102,44 @@ extension BarcodeTypeExt on Barcode {
       case BarcodeType.contactInfo:
         var buffer = StringBuffer();
         //所属
-        if(contactInfo?.organization?.isNotEmpty ?? false){
+        if (contactInfo?.organization?.isNotEmpty ?? false) {
           buffer.write("\n所属：${contactInfo!.organization!}");
         }
         //役職
-        if(contactInfo?.title?.isNotEmpty ?? false){
+        if (contactInfo?.title?.isNotEmpty ?? false) {
           buffer.write("\n役職：${contactInfo!.title}");
         }
         //電話
-        if(contactInfo?.phones?.isNotEmpty ?? false){
+        if (contactInfo?.phones?.isNotEmpty ?? false) {
           buffer.write("\n電話：");
-          buffer.write(contactInfo!.phones!.map((e) => "${e.typeText}${e.number}").join(" \n "));
+          buffer.write(contactInfo!.phones!
+              .map((e) => "${e.typeText}${e.number}")
+              .join(" \n "));
         }
         //メール
-        if(contactInfo?.emails.isNotEmpty ?? false){
+        if (contactInfo?.emails.isNotEmpty ?? false) {
           buffer.write("\nメール：");
-          buffer.write(contactInfo!.emails.map((e) => "${e.typeText}${e.address}").join(" \n "));
+          buffer.write(contactInfo!.emails
+              .map((e) => "${e.typeText}${e.address}")
+              .join(" \n "));
         }
         //住所
-        if(contactInfo?.addresses.isNotEmpty ?? false){
+        if (contactInfo?.addresses.isNotEmpty ?? false) {
           buffer.write("\n住所：\n");
-          buffer.write(contactInfo!.addresses.map((e) => e.addressLines.reversed.join("\n"),).toList().join("\n\n"));
+          buffer.write(contactInfo!.addresses
+              .map(
+                (e) => e.addressLines.reversed.join("\n"),
+              )
+              .toList()
+              .join("\n\n"));
         }
         //URL
-        if(contactInfo?.urls?.isNotEmpty ?? false){
+        if (contactInfo?.urls?.isNotEmpty ?? false) {
           buffer.write("\nURL：");
           buffer.write(contactInfo!.urls!.join(" \n "));
         }
         //最初の\nを消す。
-        if(buffer.isNotEmpty) {
+        if (buffer.isNotEmpty) {
           return buffer.toString().replaceFirst("\n", "");
         } else {
           return null;
