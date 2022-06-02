@@ -54,5 +54,7 @@
 		<string>https</string>
 		<string>http</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>スキャンする画像の選択に利用します。</string>
 </dict>
 </plist>
