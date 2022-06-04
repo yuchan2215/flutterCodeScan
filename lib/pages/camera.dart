@@ -1,12 +1,12 @@
 import 'package:after_layout/after_layout.dart';
-import 'package:codereader/pages/camera_shot.dart';
-import 'package:codereader/pages/camera_panel.dart';
+import 'package:codereader/widgets/camera/camera.dart';
+import 'package:codereader/widgets/camera/panel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import 'camera_panel_card.dart';
+import '../widgets/camera/item.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);

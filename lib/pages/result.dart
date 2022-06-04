@@ -1,4 +1,4 @@
-import 'package:codereader/pages/camera_panel_card_item.dart';
+import 'package:codereader/extensions/barcode.dart';
 import 'package:flutter/material.dart';
 
 class ResultPageState extends StatefulWidget {

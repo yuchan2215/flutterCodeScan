@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'camera_panel_card.dart';
 
 final RegExp urlReg = RegExp(
     r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+RR",
