@@ -43,12 +43,21 @@ class _ResultPageStateState extends State<ResultPageState> {
       ),
       body: ListView(
         children: [
+          ...scanedItems(),
           ...advancedItems(),
         ],
       ),
     );
   }
 
+  List<Widget> scanedItems(){
+    return [
+      ListTile(
+        leading: Icon(item.barcode.icon),
+        title: Text(item.barcode.toJapanese),
+      )
+    ];
+  }
   List<Widget> advancedItems() {
     return [
       const ListTile(

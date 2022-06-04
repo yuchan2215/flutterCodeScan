@@ -199,6 +199,37 @@ extension BarcodeTypeExt on Barcode {
         return Icons.sms;
     }
   }
+
+  String get toJapanese {
+    switch (type) {
+      case BarcodeType.phone:
+        return "電話情報";
+      case BarcodeType.isbn:
+        return "ISBN";
+      case BarcodeType.wifi:
+        return "Wi-Fi";
+      case BarcodeType.calendarEvent:
+        return "イベント情報";
+      case BarcodeType.text:
+        return "テキスト";
+      case BarcodeType.driverLicense:
+        return "免許証情報";
+      case BarcodeType.contactInfo:
+        return "連絡先情報";
+      case BarcodeType.url:
+        return "URL";
+      case BarcodeType.unknown:
+        return "不明";
+      case BarcodeType.product:
+        return "製品";
+      case BarcodeType.sms:
+        return "SMS";
+      case BarcodeType.geo:
+        return "位置情報";
+      case BarcodeType.email:
+        return "メール";
+    }
+  }
 }
 
 class BarcodeItem {
