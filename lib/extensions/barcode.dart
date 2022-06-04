@@ -1,8 +1,10 @@
+import 'package:codereader/models/barcode_component.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:intl/intl.dart';
 
-final RegExp urlReg = RegExp(
-    r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+RR",
+final RegExp urlReg = RegExp(r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+",
     caseSensitive: false);
 final RegExp mailReg = RegExp(
     r"[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
@@ -25,13 +27,13 @@ extension PhoneExt on Phone {
   String? get typeText {
     switch (type) {
       case PhoneType.fax:
-        return "(FAX)";
+        return "FAX";
       case PhoneType.home:
-        return "(自宅)";
+        return "自宅";
       case PhoneType.mobile:
-        return "(携帯)";
+        return "携帯";
       case PhoneType.work:
-        return "(仕事)";
+        return "仕事";
       default:
         return "";
     }
@@ -41,130 +43,260 @@ extension PhoneExt on Phone {
 extension BarcodeTypeExt on Barcode {
   ///[PanelCard]にて表示される文字列
   String? get displayText {
+    var items = components.where((element) => element.isImportant);
+    if (items.length != 1) {
+      return toJapanese;
+    } else {
+      return items.first.content;
+    }
+  }
+
+  ///[Barcode]の成分一覧を確認します。
+  List<BarcodeComponent> get components {
     switch (type) {
-      case BarcodeType.text:
-        return displayValue;
       case BarcodeType.url:
-        return url?.url;
-      case BarcodeType.email:
-        return email?.address;
-      case BarcodeType.calendarEvent:
-        return calendarEvent?.summary;
-      case BarcodeType.contactInfo:
-        if (contactInfo?.name?.formattedName != null) {
-          return contactInfo?.name?.formattedName;
-        } else {
-          return "連絡先データ";
-        }
-      case BarcodeType.phone:
-        return phone?.number;
-      case BarcodeType.wifi:
-        return wifi?.ssid;
-      case BarcodeType.isbn:
-      case BarcodeType.unknown:
-      case BarcodeType.product:
-        return displayValue;
-      case BarcodeType.sms:
-        return sms?.phoneNumber ?? "SMSを作成";
+        //URL
+        return [
+          BarcodeComponent(
+            title: "Title",
+            content: url?.title,
+          ),
+          BarcodeComponent(
+            title: "URL",
+            content: url?.url,
+            isImportant: true,
+            type: BarcodeComponentType.url,
+          ),
+        ];
       case BarcodeType.geo:
-        return "位置データ";
+        //GEO
+        return [
+          BarcodeComponent(
+            title: "経線",
+            content: geoPoint?.longitude?.toString(),
+            showTitleInResult: true,
+          ),
+          BarcodeComponent(
+            title: "緯線",
+            content: geoPoint?.latitude?.toString(),
+            showTitleInResult: true,
+          ),
+        ];
+      case BarcodeType.email:
+        //Email
+        return [
+          BarcodeComponent(
+            title: "宛先",
+            content: email?.address,
+            isImportant: true,
+            type: BarcodeComponentType.email,
+          ),
+          BarcodeComponent(
+            title: "件名",
+            content: email?.subject,
+            showTitleInResult: true,
+          ),
+          BarcodeComponent(
+            title: "本文",
+            content: email?.body,
+            showTitleInResult: true,
+          ),
+        ];
+      //テキスト
+      case BarcodeType.text:
+        var urlMatches = urlReg.allMatches(displayValue ?? "");
+        var emailMatches = mailReg.allMatches(displayValue ?? "");
+        List<BarcodeComponent> items = [
+          BarcodeComponent(
+              title: "テキスト", content: displayValue, isImportant: true)
+        ];
+        if (emailMatches.isNotEmpty) {
+          //メールアドレスが含まれるなら要素を追加していく
+          items.addAll([
+            BarcodeComponent(
+                title: "見つかった件数",
+                content: "${emailMatches.length}件のメールアドレスが検出されました",
+                isMemo: true),
+            ...emailMatches.map((e) => BarcodeComponent(
+                  title: "メールアドレス",
+                  content: e.group(0),
+                  type: BarcodeComponentType.email,
+                ))
+          ]);
+        }
+        if (urlMatches.isNotEmpty) {
+          //URLが含まれるなら要素を追加していく
+          items.addAll([
+            BarcodeComponent(
+                title: "見つかった件数",
+                content: "${urlMatches.length}件のURLが検出されました",
+                isMemo: true),
+            ...urlMatches.map((e) => BarcodeComponent(
+                  title: "URL",
+                  content: e.group(0),
+                  type: BarcodeComponentType.url,
+                ))
+          ]);
+        }
+        return items;
+      case BarcodeType.isbn:
+        return [
+          BarcodeComponent(
+              title: "ISBN", content: displayValue, isImportant: true),
+        ];
+      case BarcodeType.wifi:
+        return [
+          BarcodeComponent(
+            title: "SSID",
+            content: wifi?.ssid,
+            isImportant: true,
+          ),
+          BarcodeComponent(
+            title: "Password",
+            content: wifi?.password,
+            showTitleInResult: true,
+          ),
+          BarcodeComponent(
+            title: "暗号化種類",
+            content: wifi?.encryptionType.name,
+            showTitleInResult: true,
+          ),
+        ];
+      case BarcodeType.product:
+        return [
+          BarcodeComponent(
+              title: "PRODUCTCODE", content: displayValue, isImportant: true),
+        ];
+      case BarcodeType.phone:
+        return [
+          BarcodeComponent(
+            title: "電話",
+            content: displayValue,
+            isImportant: true,
+            type: BarcodeComponentType.tel,
+          ),
+        ];
+      case BarcodeType.sms:
+        return [
+          BarcodeComponent(
+            title: "電話番号",
+            content: sms?.phoneNumber,
+            isImportant: true,
+            type: BarcodeComponentType.tel,
+          ),
+          BarcodeComponent(title: "本文", content: sms?.message),
+        ];
+      case BarcodeType.calendarEvent:
+        initializeDateFormatting("ja");
+
+        var formatter = DateFormat('yyyy/MM/dd(E) HH:mm', "ja_JP");
+        var start = calendarEvent?.start;
+        var end = calendarEvent?.end;
+        var formattedStart = start == null ? null : formatter.format(start);
+        var formattedEnd = end == null ? null : formatter.format(end);
+
+        return [
+          BarcodeComponent(
+              title: "用件",
+              content: calendarEvent?.description,
+              isImportant: true),
+          BarcodeComponent(
+            title: "概要",
+            content: calendarEvent?.summary,
+            showTitleInResult: true,
+          ),
+          BarcodeComponent(
+            title: "主催者",
+            content: calendarEvent?.organizer,
+            showTitleInResult: true,
+          ),
+          BarcodeComponent(
+            title: "ステータス",
+            content: calendarEvent?.status,
+            showTitleInResult: true,
+          ),
+          BarcodeComponent(
+            title: "場所",
+            content: calendarEvent?.location,
+            showTitleInResult: true,
+          ),
+          BarcodeComponent(
+            title: "開始日時",
+            content: formattedStart,
+            showTitleInResult: true,
+          ),
+          BarcodeComponent(
+            title: "終了日時",
+            content: formattedEnd,
+            showTitleInResult: true,
+          ),
+        ];
+      case BarcodeType.contactInfo:
+        return [
+          BarcodeComponent(
+              title: "名前",
+              content: contactInfo?.name?.formattedName,
+              isImportant: true),
+          BarcodeComponent(
+            title: "所属",
+            content: contactInfo?.organization,
+            showTitleInResult: true,
+          ),
+          BarcodeComponent(
+            title: "役職",
+            content: contactInfo?.title,
+            showTitleInResult: true,
+          ),
+          ...contactInfo?.phones?.map((e) => BarcodeComponent(
+                    title: "電話 ${e.typeText}",
+                    content: e.number,
+                    type: BarcodeComponentType.tel,
+                  )) ??
+              [],
+          ...contactInfo?.emails.map((e) => BarcodeComponent(
+                    title: "メール ${e.typeText}",
+                    content: e.address,
+                    type: BarcodeComponentType.email,
+                  )) ??
+              [],
+          ...contactInfo?.addresses.map((e) => BarcodeComponent(
+                  title: "住所", content: e.addressLines.join(""))) ??
+              [],
+          ...contactInfo?.urls?.map((e) => BarcodeComponent(
+                    title: "URL",
+                    content: e,
+                    type: BarcodeComponentType.url,
+                  )) ??
+              [],
+        ];
       case BarcodeType.driverLicense:
-        return null;
+        return [
+          BarcodeComponent(
+              title: "未対応なフォーマット",
+              content: "このQRコードの読み込みは対応していません。",
+              isImportant: true)
+        ];
+      case BarcodeType.unknown:
+        return [];
     }
   }
 
   String? get getSubDisplayText {
-    switch (type) {
-      case BarcodeType.url:
-        return url?.title;
-      case BarcodeType.calendarEvent:
-        return calendarEvent?.description;
-      case BarcodeType.email:
-        String? title = email?.subject;
-        String? content = email?.body;
-        String? displayTitle = (title == null) ? null : "件名: $title}";
-        String? displayContent = (title == null) ? null : "本文: $content";
-        //もしどちらも存在するなら
-        if (displayTitle != null && displayContent != null) {
-          return "$displayText\n$displayContent";
-          //もしどちらも存在しないなら
-        } else if (displayTitle == null && displayContent == null) {
-          return "タップして空メールを作成";
-          //どちらかが存在するなら
-        } else {
-          return "$displayText$displayContent";
-        }
-      case BarcodeType.wifi:
-        return "暗号化方式:${wifi?.encryptionType.name.toUpperCase()}";
-      case BarcodeType.sms:
-        return sms?.message;
-      case BarcodeType.contactInfo:
-        var buffer = StringBuffer();
-        //所属
-        if (contactInfo?.organization?.isNotEmpty ?? false) {
-          buffer.write("\n所属：${contactInfo!.organization!}");
-        }
-        //役職
-        if (contactInfo?.title?.isNotEmpty ?? false) {
-          buffer.write("\n役職：${contactInfo!.title}");
-        }
-        //電話
-        if (contactInfo?.phones?.isNotEmpty ?? false) {
-          buffer.write("\n電話：");
-          buffer.write(contactInfo!.phones!
-              .map((e) => "${e.typeText}${e.number}")
-              .join(" \n "));
-        }
-        //メール
-        if (contactInfo?.emails.isNotEmpty ?? false) {
-          buffer.write("\nメール：");
-          buffer.write(contactInfo!.emails
-              .map((e) => "${e.typeText}${e.address}")
-              .join(" \n "));
-        }
-        //住所
-        if (contactInfo?.addresses.isNotEmpty ?? false) {
-          buffer.write("\n住所：\n");
-          buffer.write(contactInfo!.addresses
-              .map(
-                (e) => e.addressLines.reversed.join("\n"),
-              )
-              .toList()
-              .join("\n\n"));
-        }
-        //URL
-        if (contactInfo?.urls?.isNotEmpty ?? false) {
-          buffer.write("\nURL：");
-          buffer.write(contactInfo!.urls!.join(" \n "));
-        }
-        //最初の\nを消す。
-        if (buffer.isNotEmpty) {
-          return buffer.toString().replaceFirst("\n", "");
-        } else {
-          return null;
-        }
-      case BarcodeType.driverLicense:
-        return null; //サポート対象外
-      case BarcodeType.text:
-        var urlMatches = urlReg.allMatches(displayValue ?? "");
-        var emailMatches = mailReg.allMatches(displayValue ?? "");
-        var allMatches = urlMatches.toList()..addAll(emailMatches);
-
-        var textList = allMatches.map((e) => e.group(0)).toList();
-        if (emailMatches.isNotEmpty) {
-          textList.insert(0, "${emailMatches.length}件のメールアドレスが検出されました");
-        }
-        if (urlMatches.isNotEmpty) {
-          textList.insert(0, "${urlMatches.length}件のURLが検出されました");
-        }
-        var text = textList.join("\n");
-        return urlMatches.isEmpty ? null : text;
-      case BarcodeType.product:
-      case BarcodeType.phone:
-      case BarcodeType.isbn:
-      case BarcodeType.geo:
-      case BarcodeType.unknown:
-        return null;
+    var text = components
+        .where((element) =>
+            !element.isImportant &&
+            element.content != null) //重要でないかつコンテンツがないもののみにする
+        .map<String>(
+      (e) {
+        String title =
+            e.showTitleInResult ? "[${e.title}] " : ""; //タイトルを表示するならタイトルを表示する。
+        return "$title${e.content}";
+      },
+    ).join("\n");
+    if (text.isEmpty) {
+      return null;
+    } else {
+      return text;
     }
   }
 
@@ -246,6 +378,8 @@ class BarcodeItem {
 
   ///[PanelCard]にて表示される説明文
   late final String? subDisplayText = barcode.getSubDisplayText;
+
+  late final List<BarcodeComponent> components = barcode.components;
 
   BarcodeItem(this.barcode, this.context);
 
