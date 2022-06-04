@@ -38,42 +38,49 @@ class _ResultPageStateState extends State<ResultPageState> {
       Navigator.of(context).pop();
     }
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("読取結果"),
-        ),
-        body: ListView(
-          children: [
-            const ListTile(
-              title: Text("高度な情報"),
-              leading: Icon(Icons.info),
+      appBar: AppBar(
+        title: const Text("読取結果"),
+      ),
+      body: ListView(
+        children: [
+          ...advancedItems(),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> advancedItems() {
+    return [
+      const ListTile(
+        title: Text("高度な情報"),
+        leading: Icon(Icons.info),
+      ),
+      ExpansionPanelList(
+        expansionCallback: (panelIndex, isExpanded) {
+          setState(() {
+            addItems[panelIndex].isExpanded = !isExpanded;
+          });
+        },
+        children: addItems.map<ExpansionPanel>((i) {
+          return ExpansionPanel(
+            headerBuilder: ((context, isExpanded) {
+              return InkWell(
+                child: ListTile(title: Text(i.title)),
+                onTap: () {
+                  setState(() {
+                    i.isExpanded = !i.isExpanded;
+                  });
+                },
+              );
+            }),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SelectableText(i.value ?? ""),
             ),
-            ExpansionPanelList(
-              expansionCallback: (panelIndex, isExpanded) {
-                setState(() {
-                  addItems[panelIndex].isExpanded = !isExpanded;
-                });
-              },
-              children: addItems.map<ExpansionPanel>((i) {
-                return ExpansionPanel(
-                  headerBuilder: ((context, isExpanded) {
-                    return InkWell(
-                      child: ListTile(title: Text(i.title)),
-                      onTap: () {
-                        setState(() {
-                          i.isExpanded = !i.isExpanded;
-                        });
-                      },
-                    );
-                  }),
-                  body: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SelectableText(i.value ?? ""),
-                  ),
-                  isExpanded: i.isExpanded,
-                );
-              }).toList(),
-            )
-          ],
-        ));
+            isExpanded: i.isExpanded,
+          );
+        }).toList(),
+      ),
+    ];
   }
 }
