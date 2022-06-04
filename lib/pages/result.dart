@@ -50,14 +50,48 @@ class _ResultPageStateState extends State<ResultPageState> {
     );
   }
 
-  List<Widget> scanedItems(){
+  List<Widget> scanedItems() {
     return [
-      ListTile(
-        leading: Icon(item.barcode.icon),
-        title: Text(item.barcode.toJapanese),
-      )
+      ...item.components.where((e) => e.content != null).map(
+        (e) {
+          if (e.isMemo) { //メモの時はアイコンのみにする
+            return ListTile(
+              leading: const Icon(Icons.info),
+              title: Text(e.content!),
+            );
+          } else { //メモでないときはアイコンにする。
+            return Card(
+              margin: const EdgeInsets.all(16),
+              child: Container(
+                margin: const EdgeInsets.only(
+                    left: 5, top: 5, bottom: 16, right: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${e.title}:",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(color: Colors.grey),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 16.0, top: 8.0),
+                      child: Text(
+                        e.content!,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        },
+      ),
     ];
   }
+
   List<Widget> advancedItems() {
     return [
       const ListTile(
