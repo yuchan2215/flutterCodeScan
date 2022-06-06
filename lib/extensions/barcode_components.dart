@@ -167,14 +167,14 @@ extension BarcodeComponentExt on Barcode {
         return [
           getCalendarComponent(calendarEvent),
           BarcodeComponent(
-              title: "用件",
-              content: calendarEvent?.description,
-              isImportant: true),
-          BarcodeComponent(
-            title: "概要",
+            title: "タイトル",
             content: calendarEvent?.summary,
-            showTitleInResult: true,
+            isImportant: true,
           ),
+          BarcodeComponent(
+              title: "説明",
+              content: calendarEvent?.description,
+              showTitleInResult: true),
           BarcodeComponent(
             title: "主催者",
             content: calendarEvent?.organizer,
