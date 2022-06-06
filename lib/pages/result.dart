@@ -170,7 +170,7 @@ class _ResultPageStateState extends State<ResultPageState> {
             onPressed: () {
               launchUrl(Uri.parse("mailto:${component.content!}"));
             },
-            child: const Text("開く"),
+            child: const Text("メールを作成"),
           )
         ];
       case BarcodeComponentType.url:
@@ -180,7 +180,7 @@ class _ResultPageStateState extends State<ResultPageState> {
               launchUrl(Uri.parse(component.content!),
                   mode: LaunchMode.externalApplication);
             },
-            child: const Text("開く"),
+            child: const Text("ブラウザで開く"),
           )
         ];
       default:
