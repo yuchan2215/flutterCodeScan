@@ -71,10 +71,18 @@ class _ResultPageStateState extends State<ResultPageState> {
               margin: const EdgeInsets.all(16),
               child: InkWell(
                 onLongPress: () {
-                  tapEvent(e: e);
+                  if (e.onTap == null) {
+                    tapEvent(e: e);
+                  } else {
+                    e.onTap!.call(context);
+                  }
                 },
                 onTap: () {
-                  tapEvent(e: e);
+                  if (e.onTap == null) {
+                    tapEvent(e: e);
+                  } else {
+                    e.onTap!.call(context);
+                  }
                 },
                 child: Container(
                   margin: const EdgeInsets.only(
@@ -82,13 +90,14 @@ class _ResultPageStateState extends State<ResultPageState> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "${e.title}:",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(color: Colors.grey),
-                      ),
+                      if (e.onTap == null)
+                        Text(
+                          "${e.title}:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: Colors.grey),
+                        ),
                       Container(
                         margin: const EdgeInsets.only(left: 16.0, top: 8.0),
                         child: Text(

@@ -20,6 +20,7 @@ extension BarcodeComponentTypeExt on BarcodeComponentType {
         return null;
     }
   }
+
   String? get actionName {
     switch (this) {
       case BarcodeComponentType.email:
@@ -31,7 +32,6 @@ extension BarcodeComponentTypeExt on BarcodeComponentType {
       default:
         return null;
     }
-
   }
 }
 
@@ -42,6 +42,7 @@ class BarcodeComponent {
   final bool isMemo;
   final bool showTitleInResult;
   final BarcodeComponentType type;
+  final Function(BuildContext context)? onTap;
   BarcodeComponent({
     required this.title,
     required this.content,
@@ -49,5 +50,6 @@ class BarcodeComponent {
     this.isMemo = false,
     this.showTitleInResult = false,
     this.type = BarcodeComponentType.other,
+    this.onTap,
   });
 }

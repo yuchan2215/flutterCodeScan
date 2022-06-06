@@ -1,6 +1,10 @@
+import 'package:codereader/components/geo.dart';
 import 'package:codereader/extensions/barcode.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../models/barcode_component.dart';
@@ -32,6 +36,7 @@ extension BarcodeComponentExt on Barcode {
       case BarcodeType.geo:
         //GEO
         return [
+          getGeoComponent(geoPoint),//開くボタン
           BarcodeComponent(
             title: "経線",
             content: geoPoint?.longitude?.toString(),

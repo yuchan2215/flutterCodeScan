@@ -53,6 +53,18 @@
 	<array>
 		<string>https</string>
 		<string>http</string>
+		<string>comgooglemaps</string>
+		<string>baidumap</string>
+		<string>iosamap</string>
+		<string>waze</string>
+		<string>yandexmaps</string>
+		<string>yandexnavi</string>
+		<string>citymapper</string>
+		<string>mapswithme</string>
+		<string>osmandmaps</string>
+		<string>dgis</string>
+		<string>qqmap</string>
+		<string>here-location</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>スキャンする画像の選択に利用します。</string>

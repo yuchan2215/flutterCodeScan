@@ -45,10 +45,11 @@ extension BarcodeItemExt on Barcode{
   }
 
   String? get getSubDisplayText {
-    var text = 
-        components.where((element) =>
+    var text = components
+        .where((element) =>
             !element.isImportant &&
-            element.content != null) //重要でないかつコンテンツがないもののみにする
+            element.content != null &&
+            element.onTap != null) //重要でないかつコンテンツがないもののみにする
         .map<String>(
       (e) {
         String title =
