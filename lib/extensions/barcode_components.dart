@@ -1,3 +1,4 @@
+import 'package:codereader/components/email.dart';
 import 'package:codereader/components/geo.dart';
 import 'package:codereader/extensions/barcode.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,6 +52,7 @@ extension BarcodeComponentExt on Barcode {
       case BarcodeType.email:
         //Email
         return [
+          getEmailComponent(email),
           BarcodeComponent(
             title: "宛先",
             content: email?.address,
