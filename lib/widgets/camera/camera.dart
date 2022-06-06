@@ -1,5 +1,5 @@
 import 'package:codereader/pages/camera.dart';
-import 'package:codereader/pages/camera_panel.dart';
+import 'package:codereader/widgets/camera/panel.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
