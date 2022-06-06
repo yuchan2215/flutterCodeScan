@@ -1,6 +1,5 @@
 import 'package:codereader/pages/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../extensions/barcode.dart';
@@ -25,22 +24,15 @@ class PanelCard extends StatelessWidget {
       ),
       child: Card(
         child: InkWell(
-          onLongPress: longPressEvent,
           onTap: tapEvent,
           child: cardItem(),
         ),
       ),
     );
   }
-  void tapEvent(){
-            Navigator.of(context).pushNamed("/result",arguments: item);
-  }
-  ///カードを長押しした時のイベント
-  void longPressEvent() {
-    Clipboard.setData(ClipboardData(text: barcode.toString()));
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("クリップボードにコピーしました。")),
-    );
+
+  void tapEvent() {
+    Navigator.of(context).pushNamed("/result", arguments: item);
   }
 
   ///カードの内容
