@@ -1,8 +1,8 @@
 import 'package:codereader/models/barcode_component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
 
 BarcodeComponent getEmailComponent(Email? email) {
   return BarcodeComponent(

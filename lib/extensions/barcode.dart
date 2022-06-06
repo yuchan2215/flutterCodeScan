@@ -49,7 +49,7 @@ extension BarcodeItemExt on Barcode{
         .where((element) =>
             !element.isImportant &&
             element.content != null &&
-            element.onTap != null) //重要でないかつコンテンツがないもののみにする
+            element.onTap == null) //重要でないかつコンテンツがないもののみにする
         .map<String>(
       (e) {
         String title =
