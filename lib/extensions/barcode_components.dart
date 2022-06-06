@@ -1,3 +1,4 @@
+import 'package:codereader/components/calendar.dart';
 import 'package:codereader/components/email.dart';
 import 'package:codereader/components/geo.dart';
 import 'package:codereader/extensions/barcode.dart';
@@ -164,6 +165,7 @@ extension BarcodeComponentExt on Barcode {
         var formattedEnd = end == null ? null : formatter.format(end);
 
         return [
+          getCalendarComponent(calendarEvent),
           BarcodeComponent(
               title: "用件",
               content: calendarEvent?.description,
