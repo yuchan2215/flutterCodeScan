@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/camera/panel.dart';
+
 enum BarcodeComponentType {
   tel,
   email,
@@ -7,42 +9,34 @@ enum BarcodeComponentType {
   other,
 }
 
-extension BarcodeComponentTypeExt on BarcodeComponentType {
-  Icon? get getIcon {
-    switch (this) {
-      case BarcodeComponentType.email:
-        return const Icon(Icons.mail);
-      case BarcodeComponentType.tel:
-        return const Icon(Icons.phone);
-      case BarcodeComponentType.url:
-        return const Icon(Icons.link);
-      default:
-        return null;
-    }
-  }
-
-  String? get actionName {
-    switch (this) {
-      case BarcodeComponentType.email:
-        return "メール";
-      case BarcodeComponentType.tel:
-        return "電話番号";
-      case BarcodeComponentType.url:
-        return "URL";
-      default:
-        return null;
-    }
-  }
-}
-
+///読み取り結果の子要素のモデル。
 class BarcodeComponent {
+  ///タイトル
   final String title;
+
+  ///コンテンツ ここがNullだと表示されない。
   final String? content;
+
+  ///重要な要素。[SlideUpPanel]にて表示される。
   final bool isImportant;
+
+  ///メモ要素。
   final bool isMemo;
+
+  ///[SlideUpPanel]にて要素を表示するかどうか。
   final bool showTitleInResult;
+
+  ///[BarcodeComponent]の種類。
   final BarcodeComponentType type;
+
+  ///タップされた時のイベント
   final Function(BuildContext context)? onTap;
+
+  ///イベントの[BarcodeComponent]であるかどうか。
+  bool isEventComponent(){
+    return onTap != null;
+  }
+
   BarcodeComponent({
     required this.title,
     required this.content,

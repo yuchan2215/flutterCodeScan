@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:mono_kit/widgets/filled_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+///[CameraPage]にて表示される[SlidingUpPanel]
 class SlideUpPanel extends StatelessWidget {
   ///[State]
-  final CamerapageState state;
+  final CameraPageState state;
 
   ///使用する[BuildContext]
   final BuildContext context;

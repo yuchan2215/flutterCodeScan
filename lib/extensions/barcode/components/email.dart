@@ -3,8 +3,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+List<BarcodeComponent> getEmailComponent(Email? email) {
+  return [
+    _getOpenEmailComponent(email),
+    BarcodeComponent(
+      title: "宛先",
+      content: email?.address,
+      isImportant: true,
+      type: BarcodeComponentType.email,
+    ),
+    BarcodeComponent(
+      title: "件名",
+      content: email?.subject,
+      showTitleInResult: true,
+    ),
+    BarcodeComponent(
+      title: "本文",
+      content: email?.body,
+      showTitleInResult: true,
+    ),
+  ];
+}
 
-BarcodeComponent getEmailComponent(Email? email) {
+BarcodeComponent _getOpenEmailComponent(Email? email) {
   return BarcodeComponent(
     title: "",
     content: "タップしてメールを作成",
@@ -22,7 +43,8 @@ BarcodeComponent getEmailComponent(Email? email) {
       }
 
       var optionsString = options.join("&").toString(); //&でつなげる
-      if(optionsString.isNotEmpty){ //もしオプションがあるなら?でつなぐ
+      if (optionsString.isNotEmpty) {
+        //もしオプションがあるなら?でつなぐ
         urlBuilder.write("?$optionsString");
       }
       var uri = Uri.encodeFull(urlBuilder.toString());

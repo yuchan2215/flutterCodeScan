@@ -1,10 +1,8 @@
-import 'package:codereader/models/barcode_component.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'barcode_components.dart';
 
 extension EmailExt on Email {
-  String? get typeText {
+  String? get toJapanese {
     switch (type) {
       case EmailType.home:
         return "自宅:";
@@ -17,7 +15,7 @@ extension EmailExt on Email {
 }
 
 extension PhoneExt on Phone {
-  String? get typeText {
+  String? get toJapanese {
     switch (type) {
       case PhoneType.fax:
         return "FAX";
@@ -33,37 +31,7 @@ extension PhoneExt on Phone {
   }
 }
 
-extension BarcodeItemExt on Barcode{
-  ///[PanelCard]にて表示される文字列
-  String? get displayText {
-    var items = components.where((element) => element.isImportant);
-    if (items.length != 1) {
-      return toJapanese;
-    } else {
-      return items.first.content;
-    }
-  }
-
-  String? get getSubDisplayText {
-    var text = components
-        .where((element) =>
-            !element.isImportant &&
-            element.content != null &&
-            element.onTap == null) //重要でないかつコンテンツがないもののみにする
-        .map<String>(
-      (e) {
-        String title =
-            e.showTitleInResult ? "[${e.title}] " : ""; //タイトルを表示するならタイトルを表示する。
-        return "$title${e.content}";
-      },
-    ).join("\n");
-    if (text.isEmpty) {
-      return null;
-    } else {
-      return text;
-    }
-  }
-
+extension BarcodeTypeExt on Barcode {
   ///[PanelCard]にて表示されるアイコン
   IconData get icon {
     switch (type) {
@@ -125,27 +93,4 @@ extension BarcodeItemExt on Barcode{
         return "メール";
     }
   }
-}
-
-class BarcodeItem {
-  ///読み込まれた[Barcode]
-  final Barcode barcode;
-
-  ///利用する[BuildContext]
-  final BuildContext context;
-
-  ///[PanelCard]にて表示されるテキスト
-  late final String display = barcode.displayText ?? "";
-
-  ///[PanelCard]にて表示されるアイコン
-  late final IconData icon = barcode.icon;
-
-  ///[PanelCard]にて表示される説明文
-  late final String? subDisplayText = barcode.getSubDisplayText;
-
-  late final List<BarcodeComponent> components = barcode.components;
-
-  BarcodeItem(this.barcode, this.context);
-
-  Function nothingFunction = () {};
 }

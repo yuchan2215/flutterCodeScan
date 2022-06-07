@@ -3,9 +3,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+List<BarcodeComponent> getGeoComponent(GeoPoint? geoPoint) {
+  return [
+    _getGeoOpenComponent(geoPoint),
+    BarcodeComponent(
+      title: "経線",
+      content: geoPoint?.longitude?.toString(),
+      showTitleInResult: true,
+    ),
+    BarcodeComponent(
+      title: "緯線",
+      content: geoPoint?.latitude?.toString(),
+      showTitleInResult: true,
+    ),
+  ];
+}
 
 ///[GeoPoint]を開くための[BarcodeComponent]
-BarcodeComponent getGeoComponent(GeoPoint? geoPoint) {
+BarcodeComponent _getGeoOpenComponent(GeoPoint? geoPoint) {
   var coords = Coords(geoPoint?.latitude ?? 0, geoPoint?.longitude ?? 0);
   return BarcodeComponent(
     title: "",

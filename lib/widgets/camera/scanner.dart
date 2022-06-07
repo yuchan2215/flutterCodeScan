@@ -3,8 +3,10 @@ import 'package:codereader/widgets/camera/panel.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+///[CameraPage]にて表示される[MobileScanner]
 class CameraView extends StatelessWidget {
-  final CamerapageState state;
+  final CameraPageState state;
+
   const CameraView(this.state, {Key? key}) : super(key: key);
 
   @override

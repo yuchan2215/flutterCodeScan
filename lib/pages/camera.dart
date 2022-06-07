@@ -1,6 +1,6 @@
 import 'package:after_layout/after_layout.dart';
-import 'package:codereader/widgets/camera/camera.dart';
 import 'package:codereader/widgets/camera/panel.dart';
+import 'package:codereader/widgets/camera/scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -12,10 +12,10 @@ class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);
 
   @override
-  CamerapageState createState() => CamerapageState();
+  CameraPageState createState() => CameraPageState();
 }
 
-class CamerapageState extends State<CameraPage>
+class CameraPageState extends State<CameraPage>
     with AfterLayoutMixin<CameraPage> {
   ///[SlideUpPanel]のコントローラー
   final PanelController panelController = PanelController();
@@ -31,7 +31,7 @@ class CamerapageState extends State<CameraPage>
   ///読み込まれた[Barcode]の一覧
   List<Barcode> codes = [];
 
-  ///読み込まれた[codes]の数
+  ///読み込まれた[Barcode]の数
   int counts = 0;
 
   ///[getSlidingUpPanel]に表示するウィジェット一覧
@@ -44,7 +44,7 @@ class CamerapageState extends State<CameraPage>
       widgets = [];
       for (var element in codes) {
         widgets.add(
-          PanelCard(this, element, context),
+          PanelCard(element, context),
         );
       }
     });

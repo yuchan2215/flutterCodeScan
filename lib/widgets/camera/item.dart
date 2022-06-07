@@ -1,18 +1,21 @@
-import 'package:codereader/pages/camera.dart';
+import 'package:codereader/models/barcode_component.dart';
+import 'package:codereader/widgets/camera/panel.dart';
 import 'package:flutter/material.dart';
+import 'package:kotlin_flavor/scope_functions.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../../extensions/barcode.dart';
+import '../../extensions/barcode/type.dart';
+import '../../extensions/barcode/util.dart';
 
+///[SlideUpPanel]に表示される[BarcodeComponent]
 class PanelCard extends StatelessWidget {
-  final CamerapageState state;
+  ///表示する[Barcode]
   final Barcode barcode;
+
+  ///利用する[BuildContext]
   final BuildContext context;
-  late final BarcodeItem item = BarcodeItem(barcode, context);
-  PanelCard(this.state, this.barcode, this.context, {Key? key})
-      : super(key: key);
-  final RegExp regex =
-      RegExp(r"https?://[\w!\?/\+\-_~=;\.,\*&@#\$%\(\)'\[\]]+");
+
+  const PanelCard(this.barcode, this.context, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,19 +35,18 @@ class PanelCard extends StatelessWidget {
   }
 
   void tapEvent() {
-    Navigator.of(context).pushNamed("/result", arguments: item);
+    Navigator.of(context).pushNamed("/result", arguments: barcode);
   }
 
-  ///カードの内容
   Padding cardItem() {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: ListTile(
-        leading: Icon(item.icon),
-        title: Text(item.display),
-        subtitle:
-            item.subDisplayText != null ? Text(item.subDisplayText!) : null,
-      ),
+          leading: Icon(barcode.icon),
+          title: Text(barcode.displayText ?? ""),
+          subtitle: barcode.getSubDisplayText?.let((it) {
+            return Text(it);
+          })),
     );
   }
 }
