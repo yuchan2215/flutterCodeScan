@@ -1,3 +1,4 @@
+import 'package:codereader/extensions/string_scope.dart';
 import 'package:codereader/models/barcode_component.dart';
 import 'package:codereader/widgets/camera/item.dart';
 import 'package:kotlin_flavor/scope_functions.dart';
@@ -27,7 +28,7 @@ extension BarcodeItemExt on Barcode {
     return components
         .where((element) =>
             !element.isImportant &&
-            element.content != null &&
+            element.content?.emptyConvert != null &&
             !element.isEventComponent()) //条件の絞り込み
         .map<String>(
           (e) {

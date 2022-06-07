@@ -1,4 +1,5 @@
 import 'package:codereader/extensions/barcode/components.dart';
+import 'package:codereader/extensions/string_scope.dart';
 import 'package:codereader/widgets/result/component_item.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -50,7 +51,7 @@ class _ResultPageStateState extends State<ResultPageState> {
 
   List<Widget> scanedItems() {
     return [
-      ...item.components.where((e) => e.content != null).map(
+      ...item.components.where((e) => e.content?.emptyConvert != null).map(
         (e) {
           //もしメモであるならメモとして表示する
           if (e.isMemo) {
