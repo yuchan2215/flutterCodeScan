@@ -1,7 +1,7 @@
 name: codereader
 description: Two-dimensional code Reader
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -13,6 +13,22 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  mobile_scanner:
+    git:
+      url: https://github.com/yuchan2215/mobile_scanner
+  sliding_up_panel: ^2.0.0
+  permission_handler: ^9.2.0
+  mono_kit: ^0.27.1
+  url_launcher: ^6.1.2
+  image_picker: ^0.8.5+3
+  after_layout: ^1.2.0
+  intl: ^0.17.0
+  share_plus: ^4.0.6
+  map_launcher: ^2.2.3
+  add_2_calendar: ^2.1.3
+  kotlin_flavor: ^0.2.0
+  wifi_iot: ^0.3.16
+  flutter_contacts: ^1.1.4
 
 dev_dependencies:
   flutter_test:
