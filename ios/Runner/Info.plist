@@ -70,6 +70,8 @@
 	<string>スキャンする画像の選択に利用します。</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>カレンダーにイベントを追加するために利用します。</string>
+	<key>NSContactsUsageDescription</key>
+	<string>連絡先を追加するために使用します。</string>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>

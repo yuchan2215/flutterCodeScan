@@ -1,7 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart' as contact;
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+extension AddressExt on Address {
+  contact.AddressLabel get label {
+    switch (type) {
+      case AddressType.work:
+        return contact.AddressLabel.work;
+      case AddressType.home:
+        return contact.AddressLabel.home;
+      default:
+        return contact.AddressLabel.other;
+    }
+  }
+}
+
 extension EmailExt on Email {
+  contact.EmailLabel get label {
+    switch (type) {
+      case EmailType.home:
+        return contact.EmailLabel.home;
+      case EmailType.work:
+        return contact.EmailLabel.work;
+      default:
+        return contact.EmailLabel.home;
+    }
+  }
+
   String? get toJapanese {
     switch (type) {
       case EmailType.home:
@@ -15,6 +40,21 @@ extension EmailExt on Email {
 }
 
 extension PhoneExt on Phone {
+  contact.PhoneLabel get label {
+    switch (type) {
+      case PhoneType.fax:
+        return contact.PhoneLabel.faxHome;
+      case PhoneType.home:
+        return contact.PhoneLabel.home;
+      case PhoneType.mobile:
+        return contact.PhoneLabel.mobile;
+      case PhoneType.work:
+        return contact.PhoneLabel.work;
+      default:
+        return contact.PhoneLabel.other;
+    }
+  }
+
   String? get toJapanese {
     switch (type) {
       case PhoneType.fax:
