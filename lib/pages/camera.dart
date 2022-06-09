@@ -25,6 +25,12 @@ class CameraPageState extends State<CameraPage>
   }
 
   @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     //もしアプリが再開したのであれば、カメラの状態を復元する。
     if (state == AppLifecycleState.resumed) {
