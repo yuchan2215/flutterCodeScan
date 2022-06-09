@@ -37,11 +37,11 @@ class SlideUpPanel extends StatelessWidget {
         borderRadius: borderRadius,
         onPanelOpened: () {
           //パネルを開けたらカメラをストップさせる
-          state.mobileScannerController.stop();
+          state.setCameraStatus(false);
         },
         onPanelClosed: () {
           //パネルを閉めたらカメラをスタートさせる
-          state.mobileScannerController.start();
+          state.setCameraStatus(true);
         },
       ),
     );

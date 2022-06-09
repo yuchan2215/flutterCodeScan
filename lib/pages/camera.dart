@@ -16,13 +16,29 @@ class CameraPage extends StatefulWidget {
 }
 
 class CameraPageState extends State<CameraPage>
-    with AfterLayoutMixin<CameraPage> {
+    with AfterLayoutMixin<CameraPage>, WidgetsBindingObserver {
+  ///ライフサイクルをオブザーブする。
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    //もしアプリが再開したのであれば、カメラの状態を復元する。
+    if (state == AppLifecycleState.resumed) {
+      setCameraStatus(cameraIsRunning);
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
   ///[SlideUpPanel]のコントローラー
   final PanelController panelController = PanelController();
 
   ///[CameraView]のコントローラー
   final MobileScannerController mobileScannerController =
-      MobileScannerController();
+      MobileScannerController(autoResume: false);
 
   ///[SlideUpPanel]で使用するedgeSize
   final double edgeSize = 24.0;
@@ -48,6 +64,22 @@ class CameraPageState extends State<CameraPage>
         );
       }
     });
+  }
+
+  ///カメラが実行中であるかという状態
+  bool cameraIsRunning = true;
+
+  void setCameraStatus(bool toStart) {
+    //引数の値を変数に代入する
+    cameraIsRunning = toStart;
+
+    //もしカメラをつけるのであれば
+    if (!mobileScannerController.isStarting && toStart) {
+      mobileScannerController.start();
+    } else if (!toStart) {
+      //もし消すのであれば
+      mobileScannerController.stop();
+    }
   }
 
   ///もし画像のパスが渡されているのであれば、[MobileScannerController]に値を渡し、スキャンします。
