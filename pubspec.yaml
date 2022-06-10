@@ -29,6 +29,7 @@ dependencies:
   kotlin_flavor: ^0.2.0
   wifi_iot: ^0.3.16
   flutter_contacts: ^1.1.4
+  package_info_plus: ^1.4.2
 
 dev_dependencies:
   flutter_test:
