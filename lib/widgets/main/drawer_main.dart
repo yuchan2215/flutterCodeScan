@@ -32,7 +32,9 @@ class DrawerWidget extends StatelessWidget {
               ListTile(
                 title: const Text("このアプリについて"),
                 leading: const Icon(Icons.info_outline),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushNamed("/about");
+                },
               ),
             ],
           ),
