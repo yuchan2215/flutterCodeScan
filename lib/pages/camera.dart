@@ -1,9 +1,11 @@
 import 'package:after_layout/after_layout.dart';
+import 'package:codereader/main.dart';
 import 'package:codereader/widgets/camera/panel.dart';
 import 'package:codereader/widgets/camera/scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../widgets/camera/item.dart';
@@ -42,6 +44,8 @@ class CameraPageState extends State<CameraPage>
   ///[SlideUpPanel]のコントローラー
   final PanelController panelController = PanelController();
 
+  ///自動的にパネルを開くかどうか。
+  bool? autoOpen;
   ///[CameraView]のコントローラー
   final MobileScannerController mobileScannerController =
       MobileScannerController(autoResume: false);
@@ -106,8 +110,20 @@ class CameraPageState extends State<CameraPage>
       appBar: AppBar(
         title: const Text("読み込み"),
       ),
-      body: Stack(
-        children: [CameraView(this), SlideUpPanel(this, context)],
+      body: FutureBuilder(
+        future: SharedPreferences.getInstance(),
+        builder: (context, data) {
+          if (data.hasData) {
+            var preference = data.data as SharedPreferences;
+            autoOpen = preference.getBool(autoOpenKey);
+
+            return Stack(
+              children: [CameraView(this), SlideUpPanel(this, context)],
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
       ),
     );
   }
