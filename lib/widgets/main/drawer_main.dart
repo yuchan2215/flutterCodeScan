@@ -26,7 +26,9 @@ class DrawerWidget extends StatelessWidget {
               ListTile(
                 title: const Text("設定"),
                 leading: const Icon(Icons.settings),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushNamed("/setting");
+                },
               ),
               Expanded(child: Container()),
               ListTile(

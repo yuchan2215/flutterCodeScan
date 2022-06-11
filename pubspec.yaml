@@ -30,6 +30,8 @@ dependencies:
   wifi_iot: ^0.3.16
   flutter_contacts: ^1.1.4
   package_info_plus: ^1.4.2
+  shared_preferences: ^2.0.15
+  awesome_select: ^5.2.0
 
 dev_dependencies:
   flutter_test:

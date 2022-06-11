@@ -76,6 +76,8 @@ PODS:
   - Protobuf (3.21.1)
   - share_plus (0.0.1):
     - Flutter
+  - shared_preferences_ios (0.0.1):
+    - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
   - wifi_iot (0.0.1):
@@ -92,6 +94,7 @@ DEPENDENCIES:
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
+  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - wifi_iot (from `.symlinks/plugins/wifi_iot/ios`)
 
@@ -132,6 +135,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
+  shared_preferences_ios:
+    :path: ".symlinks/plugins/shared_preferences_ios/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   wifi_iot:
@@ -161,6 +166,7 @@ SPEC CHECKSUMS:
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   Protobuf: 9e88c1e667d75aa2491d211f26ccddde4e8ad4cf
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
+  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
   wifi_iot: b5aafd6f9b52f8a357383a1deabab45f31cd602d
 
