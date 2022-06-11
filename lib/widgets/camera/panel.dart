@@ -1,4 +1,5 @@
 import 'package:codereader/pages/camera.dart';
+import 'package:codereader/widgets/settings/stop_timing.dart';
 import 'package:flutter/material.dart';
 import 'package:mono_kit/widgets/filled_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -36,7 +37,7 @@ class SlideUpPanel extends StatelessWidget {
         ),
         borderRadius: borderRadius,
         onPanelOpened: () {
-          //パネルを開けたらカメラをストップさせる
+          if (state.stopTiming.scanOnPanel) return; //裏でスキャンを続けるのであればなにもしない
           state.setCameraStatus(false);
         },
         onPanelClosed: () {

@@ -23,6 +23,10 @@ class CameraView extends StatelessWidget {
               if (isExistData(barcode)) return; //もしデータが存在するなら早期リターン
               state.codes.add(barcode); //コードを追加する
               state.update(); //アップデートする。
+              if (state.autoOpen ?? false) {
+                //もし自動で開くのであれば開く。
+                state.panelController.open();
+              }
             },
           ),
         ),

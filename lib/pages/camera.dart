@@ -1,12 +1,16 @@
 import 'package:after_layout/after_layout.dart';
+import 'package:codereader/main.dart';
 import 'package:codereader/widgets/camera/panel.dart';
 import 'package:codereader/widgets/camera/scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kotlin_flavor/scope_functions.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../widgets/camera/item.dart';
+import '../widgets/settings/stop_timing.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);
@@ -42,6 +46,12 @@ class CameraPageState extends State<CameraPage>
   ///[SlideUpPanel]のコントローラー
   final PanelController panelController = PanelController();
 
+  ///自動的にパネルを開くかどうか。
+  bool? autoOpen;
+
+  ///パネルを開いている時にスキャンを止めるかどうか
+  StopTiming stopTiming = StopTimingExt.getDefault();
+
   ///[CameraView]のコントローラー
   final MobileScannerController mobileScannerController =
       MobileScannerController(autoResume: false);
@@ -66,7 +76,7 @@ class CameraPageState extends State<CameraPage>
       widgets = [];
       for (var element in codes) {
         widgets.add(
-          PanelCard(element, context),
+          PanelCard(element, context, this),
         );
       }
     });
@@ -106,8 +116,25 @@ class CameraPageState extends State<CameraPage>
       appBar: AppBar(
         title: const Text("読み込み"),
       ),
-      body: Stack(
-        children: [CameraView(this), SlideUpPanel(this, context)],
+      body: FutureBuilder(
+        future: SharedPreferences.getInstance(),
+        builder: (context, data) {
+          if (data.hasData) {
+            var preference = data.data as SharedPreferences;
+            autoOpen = preference.getBool(autoOpenKey);
+            stopTiming = run(() {
+              var key = preference.getString(stopTimingKey);
+              if (key == null) return StopTimingExt.getDefault();
+              return StopTimingExt.fromString(key);
+            });
+
+            return Stack(
+              children: [CameraView(this), SlideUpPanel(this, context)],
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
       ),
     );
   }
