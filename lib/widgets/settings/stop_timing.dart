@@ -51,9 +51,9 @@ extension StopTimingExt on StopTiming {
   bool get scanOnPanel {
     switch (this) {
       case StopTiming.none:
+      case StopTiming.resultView:
         return true;
       case StopTiming.listView:
-      case StopTiming.resultView:
         return false;
     }
   }
