@@ -76,7 +76,7 @@ class CameraPageState extends State<CameraPage>
       widgets = [];
       for (var element in codes) {
         widgets.add(
-          PanelCard(element, context),
+          PanelCard(element, context, this),
         );
       }
     });

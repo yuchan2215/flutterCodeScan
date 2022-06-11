@@ -58,6 +58,16 @@ extension StopTimingExt on StopTiming {
     }
   }
 
+  bool get scanOnResult {
+    switch (this) {
+      case StopTiming.none:
+        return true;
+      case StopTiming.resultView:
+      case StopTiming.listView:
+        return false;
+    }
+  }
+
   static StopTiming getDefault() {
     return StopTiming.listView;
   }
