@@ -50,6 +50,10 @@ class _AboutPageState extends State<AboutPageState>
                 },
                 child: const Text("ライセンス情報を確認"),
               ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(16.0),
+              child: const Text("アプリのアイコンは ICON BOX 様の画像を利用しております。"),
             )
           ],
         ),
