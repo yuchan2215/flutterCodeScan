@@ -30,12 +30,13 @@ class MyHomePageState extends State<MyHomePage> {
               description: "ギャラリーから画像を選択された画像から、コードを読み取ります。",
               icon: Icons.image_search,
               key: const Key("gallery_card"),
-              onPressed: () async{
+              onPressed: () async {
                 final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if(!mounted)return;
-                if(image == null)return;
-                Navigator.of(context).pushNamed("/camera",arguments: image);
+                final XFile? image =
+                    await picker.pickImage(source: ImageSource.gallery);
+                if (!mounted) return;
+                if (image == null) return;
+                Navigator.of(context).pushNamed("/camera", arguments: image);
               },
             ),
             Expanded(child: Container()),

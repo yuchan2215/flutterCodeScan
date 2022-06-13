@@ -7,6 +7,7 @@ class AdditionalInformation {
     required this.value,
     this.isExpanded = false,
   });
+
   String title;
   String? value;
   bool isExpanded;

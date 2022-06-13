@@ -10,8 +10,7 @@ List<BarcodeComponent> getTextComponents(String? displayValue) {
   var urlMatches = urlReg.allMatches(displayValue ?? "");
   var emailMatches = mailReg.allMatches(displayValue ?? "");
   List<BarcodeComponent> items = [
-    BarcodeComponent(
-        title: "テキスト", content: displayValue, isImportant: true)
+    BarcodeComponent(title: "テキスト", content: displayValue, isImportant: true)
   ];
   if (emailMatches.isNotEmpty) {
     //メールアドレスが含まれるなら要素を追加していく
