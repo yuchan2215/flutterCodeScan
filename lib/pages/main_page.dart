@@ -1,3 +1,4 @@
+import 'package:codereader/widgets/main/drawer_main.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -10,6 +11,7 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      drawer: DrawerWidget(),
       body: SafeArea(
         child: Column(
           children: [
