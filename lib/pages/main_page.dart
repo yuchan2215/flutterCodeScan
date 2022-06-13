@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:codereader/widgets/main/drawer_main.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -107,7 +106,6 @@ class MyHomePageState extends State<MyHomePage> {
                         child: const Text("開く"),
                       ),
                     ),
-                    if (!isEnable) ..._disableMessage,
                   ],
                 ),
               )
@@ -117,11 +115,4 @@ class MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  static const List<Widget> _disableMessage = <Widget>[
-    Text(
-      "この機能のiOS版は開発中です。",
-      softWrap: true,
-    ),
-  ];
 }
