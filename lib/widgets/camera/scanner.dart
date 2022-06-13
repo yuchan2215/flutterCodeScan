@@ -18,16 +18,7 @@ class CameraView extends StatelessWidget {
             controller: state.mobileScannerController,
             allowDuplicates: true,
             //検出時の処理
-            onDetect: (barcode, args) async {
-              if (barcode.rawBytes == null) return; //もしデータがNullな早期リターン
-              if (isExistData(barcode)) return; //もしデータが存在するなら早期リターン
-              state.codes.add(barcode); //コードを追加する
-              state.update(); //アップデートする。
-              if (state.autoOpen ?? false) {
-                //もし自動で開くのであれば開く。
-                state.panelController.open();
-              }
-            },
+            onDetect: (barcode, _) => state.detect(barcode),
           ),
         ),
         spacer(),
@@ -40,13 +31,5 @@ class CameraView extends StatelessWidget {
     return SizedBox(
       height: state.defaultPanelSize - state.edgeSize,
     );
-  }
-
-  ///データが存在するかどうか
-  bool isExistData(Barcode barcode) {
-    var readRaw = barcode.rawBytes?.join(""); //Stringに変換する
-    return state.codes
-        .where((Barcode code) => code.rawBytes?.join("") == readRaw)
-        .isNotEmpty;
   }
 }

@@ -33,7 +33,7 @@ class BarcodeComponent {
   final Function(BuildContext context)? onTap;
 
   ///イベントの[BarcodeComponent]であるかどうか。
-  bool isEventComponent(){
+  bool isEventComponent() {
     return onTap != null;
   }
 
