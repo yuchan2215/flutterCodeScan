@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:after_layout/after_layout.dart';
 import 'package:codereader/main.dart';
 import 'package:codereader/widgets/camera/panel.dart';
@@ -106,7 +108,14 @@ class CameraPageState extends State<CameraPage>
     if (obj == null) return;
     if (obj is! XFile) return;
     String path = obj.path;
-    await mobileScannerController.analyzeImage(path);
+    //新規でコントローラーを作成
+    MobileScannerController cameraController = MobileScannerController();
+    late StreamSubscription sub;
+    sub = cameraController.barcodesController.stream.listen((barcode) {
+      detect(barcode);
+    });
+    await cameraController.analyzeImage(path);
+    sub.cancel();
     panelController.open();
   }
 
@@ -129,7 +138,10 @@ class CameraPageState extends State<CameraPage>
             });
 
             return Stack(
-              children: [CameraView(this), SlideUpPanel(this, context)],
+              children: [
+                CameraView(this),
+                SlideUpPanel(this, context),
+              ],
             );
           } else {
             return const CircularProgressIndicator();
@@ -137,5 +149,24 @@ class CameraPageState extends State<CameraPage>
         },
       ),
     );
+  }
+
+  ///データが存在するかどうか
+  bool isExistData(Barcode barcode) {
+    var readRaw = barcode.rawBytes?.join(""); //Stringに変換する
+    return codes
+        .where((Barcode code) => code.rawBytes?.join("") == readRaw)
+        .isNotEmpty;
+  }
+
+  Future detect(Barcode barcode) async {
+    if (barcode.rawBytes == null) return; //もしデータがNullな早期リターン
+    if (isExistData(barcode)) return; //もしデータが存在するなら早期リターン
+    codes.add(barcode); //コードを追加する
+    update(); //アップデートする。
+    if (autoOpen ?? false) {
+      //もし自動で開くのであれば開く。
+      panelController.open();
+    }
   }
 }

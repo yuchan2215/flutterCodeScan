@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:codereader/widgets/main/drawer_main.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -34,8 +35,12 @@ class MyHomePageState extends State<MyHomePage> {
                 key: const Key("gallery_card"),
                 onPressed: () async {
                   final ImagePicker picker = ImagePicker();
-                  final XFile? image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                  final XFile? image = await picker.pickImage(
+                    //なぜか動くのでinfinity
+                    source: ImageSource.gallery,
+                    maxWidth: double.infinity,
+                    maxHeight: double.infinity,
+                  );
                   if (!mounted) return;
                   if (image == null) return;
                   Navigator.of(context).pushNamed("/camera", arguments: image);
@@ -98,7 +103,7 @@ class MyHomePageState extends State<MyHomePage> {
                           onPrimary: Theme.of(context).colorScheme.onPrimary,
                           primary: Theme.of(context).colorScheme.primary,
                         ),
-                        onPressed: isEnable ? onPressed : null,
+                        onPressed: onPressed,
                         child: const Text("開く"),
                       ),
                     ),
