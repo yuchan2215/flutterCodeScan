@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:codereader/widgets/main/drawer_main.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,19 +28,20 @@ class MyHomePageState extends State<MyHomePage> {
               },
             ),
             getCard(
-              title: "ギャラリーから読み込む",
-              description: "ギャラリーから画像を選択された画像から、コードを読み取ります。",
-              icon: Icons.image_search,
-              key: const Key("gallery_card"),
-              onPressed: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image =
-                    await picker.pickImage(source: ImageSource.gallery);
-                if (!mounted) return;
-                if (image == null) return;
-                Navigator.of(context).pushNamed("/camera", arguments: image);
-              },
-            ),
+                title: "ギャラリーから読み込む",
+                description: "ギャラリーから画像を選択された画像から、コードを読み取ります。",
+                icon: Icons.image_search,
+                key: const Key("gallery_card"),
+                onPressed: () async {
+                  final ImagePicker picker = ImagePicker();
+                  final XFile? image =
+                      await picker.pickImage(source: ImageSource.gallery);
+                  if (!mounted) return;
+                  if (image == null) return;
+                  Navigator.of(context).pushNamed("/camera", arguments: image);
+                },
+                isEnable: !Platform.isIOS //iOSならfalseにする。それ以外ならTrue
+                ),
             Expanded(child: Container()),
           ],
         ),
@@ -52,6 +55,7 @@ class MyHomePageState extends State<MyHomePage> {
     required IconData icon,
     required Key key,
     required Function()? onPressed,
+    bool isEnable = true,
   }) {
     return Card(
       key: key,
@@ -93,11 +97,12 @@ class MyHomePageState extends State<MyHomePage> {
                         style: ElevatedButton.styleFrom(
                           onPrimary: Theme.of(context).colorScheme.onPrimary,
                           primary: Theme.of(context).colorScheme.primary,
-                        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                        onPressed: onPressed,
+                        ),
+                        onPressed: isEnable ? onPressed : null,
                         child: const Text("開く"),
                       ),
-                    )
+                    ),
+                    if (!isEnable) ..._disableMessage,
                   ],
                 ),
               )
@@ -107,4 +112,11 @@ class MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  static const List<Widget> _disableMessage = <Widget>[
+    Text(
+      "この機能のiOS版は開発中です。",
+      softWrap: true,
+    ),
+  ];
 }
